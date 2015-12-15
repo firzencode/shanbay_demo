@@ -1,0 +1,37 @@
+<com.shanbay.nceapp.FractionFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EFEFEF"
+    android:clickable="true"
+    tools:context="com.shanbay.nceapp.filecontent.ContentFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#232323">
+
+            <ImageView
+                android:id="@+id/content_top_bar_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:background="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/content_top_bar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/content_top_bar_back"
+                android:text="Title"
+                android:textColor="#ffffff" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</com.shanbay.nceapp.FractionFrameLayout>
