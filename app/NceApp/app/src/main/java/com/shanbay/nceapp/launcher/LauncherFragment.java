@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.shanbay.nceapp.DataReader;
 import com.shanbay.nceapp.R;
 
 
@@ -53,6 +54,7 @@ public class LauncherFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             // TODO prepare data, now just wait a moment
+            DataReader.readAssets(getActivity());
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
