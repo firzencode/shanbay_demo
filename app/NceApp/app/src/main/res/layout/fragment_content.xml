@@ -17,12 +17,18 @@
             android:layout_height="60dp"
             android:background="#232323">
 
-            <ImageView
+            <RelativeLayout
                 android:id="@+id/content_top_bar_back"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                android:background="#FFFFFF" />
+                android:layout_width="60dp"
+                android:layout_height="60dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:background="#FFFFFF" />
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/content_top_bar_title"
@@ -32,6 +38,124 @@
                 android:text="Title"
                 android:textColor="#ffffff" />
 
+            <RelativeLayout
+                android:id="@+id/content_top_bar_switch_slide_bar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentRight="true">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:background="#FFFFFF" />
+            </RelativeLayout>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/content_layout_text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Text" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/content_layout_words"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Words" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/content_layout_translation"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Translation" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#222222"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/content_bottom_bar_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:background="#666666" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/content_bottom_bar_word"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:background="#666666" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/content_bottom_bar_translation"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:background="#666666" />
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/content_layout_slider_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:background="#66BBBBBB"
+        android:visibility="gone">
+
+        <SeekBar
+            android:id="@+id/content_slide_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp" />
+
+    </RelativeLayout>
 </com.shanbay.nceapp.FractionFrameLayout>
