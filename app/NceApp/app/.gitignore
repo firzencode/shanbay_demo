@@ -1,7 +1,1 @@
 /build
-*.DS_Store
-
-# IDEA
-*.iml
-.idea/
-local.properties
