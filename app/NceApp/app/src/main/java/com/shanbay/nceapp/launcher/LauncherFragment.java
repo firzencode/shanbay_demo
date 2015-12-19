@@ -1,17 +1,18 @@
 package com.shanbay.nceapp.launcher;
 
 
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.shanbay.nceapp.DataReader;
 import com.shanbay.nceapp.R;
+import com.shanbay.nceapp.data.DataLesson;
+
+import java.util.ArrayList;
 
 
 /**
@@ -22,7 +23,7 @@ public class LauncherFragment extends Fragment {
     private ILauncherFragmentListener mListener;
 
     public interface ILauncherFragmentListener {
-        void onPrepareDataFinish();
+        void onPrepareDataFinish(ArrayList<DataLesson> list);
     }
 
     public LauncherFragment() {
@@ -49,24 +50,22 @@ public class LauncherFragment extends Fragment {
         task.execute();
     }
 
-    private class PrepareDataTask extends AsyncTask<Void, Void, Void> {
+    private class PrepareDataTask extends AsyncTask<Void, Void, ArrayList<DataLesson>> {
 
         @Override
-        protected Void doInBackground(Void... params) {
-            // TODO prepare data, now just wait a moment
-            DataReader.readAssets(getActivity());
+        protected ArrayList<DataLesson> doInBackground(Void... params) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return null;
+            return DataReader.readAssets(getActivity());
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(ArrayList<DataLesson> result) {
             if (mListener != null) {
-                mListener.onPrepareDataFinish();
+                mListener.onPrepareDataFinish(result);
             }
         }
     }

@@ -1,6 +1,8 @@
 package com.shanbay.nceapp.filelist;
 
 
+import com.shanbay.nceapp.data.DataLesson;
+
 /**
  * This class is used to represent an item in file list.
  * It may be a Unit Item, or Lesson Item.
@@ -8,23 +10,13 @@ package com.shanbay.nceapp.filelist;
 public class FileItem {
 
     private boolean mIsUnit;
-    private String mTitle;
-    private String mSubTitle;
-    private int mLessonIndex;
+    private int mIndex;
+    private DataLesson mData;
 
-    /**
-     * Create a file item.
-     *
-     * @param isUnit      True is Unit Item, false is Lesson Item
-     * @param title       The item's title.
-     * @param subTitle    The item's subtitle, only validated in Lesson Item
-     * @param lessonIndex The item's index, only validated in Lesson Item
-     */
-    public FileItem(boolean isUnit, String title, String subTitle, int lessonIndex) {
+    public FileItem(boolean isUnit, int index, DataLesson data) {
         mIsUnit = isUnit;
-        mTitle = title;
-        mSubTitle = subTitle;
-        mLessonIndex = lessonIndex;
+        mIndex = index;
+        mData = data;
     }
 
     /**
@@ -37,30 +29,16 @@ public class FileItem {
     }
 
     /**
-     * Get the item title.
-     *
-     * @return The title.
-     */
-    public String getTitle() {
-        return mTitle;
-    }
-
-    /**
-     * Get the item subtitle.
-     *
-     * @return The subtitle, only validated in Lesson Item
-     */
-    public String getSubTitle() {
-        return mSubTitle;
-    }
-
-    /**
      * Get the item index.
      *
      * @return The index, only validated in Lesson Item
      */
     public int getIndex() {
-        return mLessonIndex;
+        return mIndex;
+    }
+
+    public DataLesson getData() {
+        return mData;
     }
 
 }

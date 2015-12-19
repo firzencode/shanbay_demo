@@ -54,15 +54,15 @@ public class FileListViewAdapter extends ArrayAdapter<FileItem> {
             holder.mLayoutUnit.setVisibility(View.VISIBLE);
             holder.mLayoutLesson.setVisibility(View.GONE);
 
-            holder.mTvUnitTitle.setText(item.getTitle());
+            holder.mTvUnitTitle.setText("Unit " + String.valueOf(item.getIndex() + 1));
         } else {
             holder.mLayoutUnit.setVisibility(View.GONE);
             holder.mLayoutLesson.setVisibility(View.VISIBLE);
 
-            holder.mTvTitle.setText(item.getTitle());
-            holder.mTvSubTitle.setText(item.getSubTitle());
+            holder.mTvTitle.setText(item.getData().getTitle());
+            holder.mTvSubTitle.setText(item.getData().getSubTitle());
 
-            holder.mTvIndex.setText(String.valueOf(item.getIndex()));
+            holder.mTvIndex.setText(String.valueOf(item.getIndex() + 1));
         }
 
         return convertView;

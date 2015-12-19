@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
+import com.shanbay.nceapp.data.DataLesson;
 import com.shanbay.nceapp.filecontent.ContentFragment;
 import com.shanbay.nceapp.filelist.FileListFragment;
 import com.shanbay.nceapp.filelist.FileItem;
@@ -21,7 +22,16 @@ public class MainActivity extends Activity {
 
     private LauncherFragment.ILauncherFragmentListener mFragmentLauncherListener = new LauncherFragment.ILauncherFragmentListener() {
         @Override
-        public void onPrepareDataFinish() {
+        public void onPrepareDataFinish(ArrayList<DataLesson> dataList) {
+            mDataLessonList.addAll(dataList);
+
+            for (int i = 0; i < mDataLessonList.size(); i++) {
+                if (i % 8 == 0) {
+                    mFileItemList.add(new FileItem(true, i / 8, null));
+                }
+                FileItem lessonItem = new FileItem(false, i, mDataLessonList.get(i));
+                mFileItemList.add(lessonItem);
+            }
             openFragmentFileList();
         }
     };
@@ -47,7 +57,7 @@ public class MainActivity extends Activity {
     };
 
     private ArrayList<FileItem> mFileItemList;
-
+    private ArrayList<DataLesson> mDataLessonList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +65,13 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         mFileItemList = new ArrayList<FileItem>();
+        mDataLessonList = new ArrayList<DataLesson>();
 
         /* --- DEBUG --- */
-        for (int i = 0; i < 48; i++) {
-            boolean isUnit = (i % 7 == 0);
-            mFileItemList.add(new FileItem(isUnit, "title", "sub title", i));
-        }
+//        for (int i = 0; i < 48; i++) {
+//            boolean isUnit = (i % 7 == 0);
+//            mFileItemList.add(new FileItem(isUnit, "title", "sub title", i));
+//        }
 
         /* --- DEBUG END --- */
 
