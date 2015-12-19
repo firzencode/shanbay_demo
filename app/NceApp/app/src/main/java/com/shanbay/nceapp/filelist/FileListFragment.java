@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.shanbay.nceapp.R;
+import com.shanbay.nceapp.data.DataLesson;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class FileListFragment extends Fragment {
     public interface IFileListFragmentListener {
         List<FileItem> getFileItemList();
 
-        void onFileItemClick(int lessonIndex);
+        void onFileItemClick(DataLesson dataLesson);
     }
 
     private ListView mFileListView;
@@ -34,7 +35,7 @@ public class FileListFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             FileItem item = mFileListViewAdapter.getItem(position);
             if (item.isUnit() == false) {
-                mListener.onFileItemClick(item.getIndex());
+                mListener.onFileItemClick(item.getData());
             }
         }
     };

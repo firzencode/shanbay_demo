@@ -1,26 +1,29 @@
-package com.shanbay.nceapp;
+package com.shanbay.nceapp.data;
 
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
-import com.shanbay.nceapp.data.DataLesson;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DataReader {
+    private static final String NCE_FILE_NAME = "nce4.txt";
+    private static final String NCE_WORD_FILE_NAME = "nce4_words";
 
-    public static ArrayList<DataLesson> readAssets(Context context) {
+    public static ArrayList<DataLesson> readTextAssets(Context context) {
         ArrayList<DataLesson> mDataList = null;
         AssetManager am = context.getAssets();
         try {
-            InputStream is = am.open("nce4.txt");
+            InputStream is = am.open(NCE_FILE_NAME);
             InputStreamReader reader = new InputStreamReader(is);
             BufferedReader bufReader = new BufferedReader(reader);
             ArrayList<StringBuilder> mTextList = readData(bufReader);
@@ -136,7 +139,7 @@ public class DataReader {
         int endIndex = matEnd.start();
 
         String wordText = lessonText.substring(startIndex, endIndex);
-//        Log.d("TEST", "WORD TEXT:\n" + wordText);
+//      Log.d("TEST", "WORD TEXT:\n" + wordText);
 
         Pattern patType = Pattern.compile(".+\\..*\n");
         Matcher matType = patType.matcher(wordText);
@@ -158,5 +161,36 @@ public class DataReader {
         String trans = lessonText.substring(matcher.start(), lessonText.length());
         dataLesson.setTranslation(trans);
         //Log.d("TEST", "======Trans:======\n" + trans);
+    }
+
+    public static HashMap<String, Integer> readWordAssets(Context context) {
+        HashMap<String, Integer> mWordMap = new HashMap<>();
+        AssetManager am = context.getAssets();
+        try {
+            InputStream is = am.open(NCE_WORD_FILE_NAME);
+            InputStreamReader reader = new InputStreamReader(is);
+            BufferedReader bufReader = new BufferedReader(reader);
+            String line;
+            bufReader.readLine();    // remove first line;
+            while ((line = bufReader.readLine()) != null) {
+                line = URLDecoder.decode(line, "UTF-8");
+                Pattern pat = Pattern.compile("\\d");
+                Matcher mat = pat.matcher(line);
+                mat.find();
+                String word = line.substring(0, mat.start()).trim();
+                int level = Integer.parseInt(mat.group());
+                mWordMap.put(word, level);
+                Log.d("TEST", "w = " + word + " l = " + level);
+            }
+            is.close();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("TEST", "Read Done");
+
+        return mWordMap;
     }
 }

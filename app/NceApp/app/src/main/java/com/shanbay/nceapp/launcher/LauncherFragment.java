@@ -8,11 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shanbay.nceapp.DataReader;
+import com.shanbay.nceapp.data.DataReader;
 import com.shanbay.nceapp.R;
 import com.shanbay.nceapp.data.DataLesson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -23,7 +24,9 @@ public class LauncherFragment extends Fragment {
     private ILauncherFragmentListener mListener;
 
     public interface ILauncherFragmentListener {
-        void onPrepareDataFinish(ArrayList<DataLesson> list);
+        void onDataLoaded(ArrayList<DataLesson> dataList, HashMap<String, Integer> wordMap);
+
+        void onCloseLauncher();
     }
 
     public LauncherFragment() {
@@ -50,22 +53,28 @@ public class LauncherFragment extends Fragment {
         task.execute();
     }
 
-    private class PrepareDataTask extends AsyncTask<Void, Void, ArrayList<DataLesson>> {
+    private class PrepareDataTask extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected ArrayList<DataLesson> doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return DataReader.readAssets(getActivity());
+            HashMap<String, Integer> wordMap = DataReader.readWordAssets(getActivity());
+            ArrayList<DataLesson> dataList = DataReader.readTextAssets(getActivity());
+            if (mListener != null) {
+                mListener.onDataLoaded(dataList, wordMap);
+            }
+
+            return null;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<DataLesson> result) {
+        protected void onPostExecute(Void result) {
             if (mListener != null) {
-                mListener.onPrepareDataFinish(result);
+                mListener.onCloseLauncher();
             }
         }
     }

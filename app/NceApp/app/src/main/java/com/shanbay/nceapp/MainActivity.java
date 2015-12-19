@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 
 import com.shanbay.nceapp.data.DataLesson;
 import com.shanbay.nceapp.filecontent.ContentFragment;
@@ -12,6 +13,7 @@ import com.shanbay.nceapp.filelist.FileItem;
 import com.shanbay.nceapp.launcher.LauncherFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -22,7 +24,7 @@ public class MainActivity extends Activity {
 
     private LauncherFragment.ILauncherFragmentListener mFragmentLauncherListener = new LauncherFragment.ILauncherFragmentListener() {
         @Override
-        public void onPrepareDataFinish(ArrayList<DataLesson> dataList) {
+        public void onDataLoaded(ArrayList<DataLesson> dataList, HashMap<String, Integer> wordMap) {
             mDataLessonList.addAll(dataList);
 
             for (int i = 0; i < mDataLessonList.size(); i++) {
@@ -32,6 +34,11 @@ public class MainActivity extends Activity {
                 FileItem lessonItem = new FileItem(false, i, mDataLessonList.get(i));
                 mFileItemList.add(lessonItem);
             }
+            mWordMap.putAll(wordMap);
+        }
+
+        @Override
+        public void onCloseLauncher() {
             openFragmentFileList();
         }
     };
@@ -44,8 +51,8 @@ public class MainActivity extends Activity {
 
 
         @Override
-        public void onFileItemClick(int lessonIndex) {
-            openFragmentContent(lessonIndex);
+        public void onFileItemClick(DataLesson lesson) {
+            openFragmentContent(lesson);
         }
     };
 
@@ -58,6 +65,7 @@ public class MainActivity extends Activity {
 
     private ArrayList<FileItem> mFileItemList;
     private ArrayList<DataLesson> mDataLessonList;
+    private HashMap<String, Integer> mWordMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +74,7 @@ public class MainActivity extends Activity {
 
         mFileItemList = new ArrayList<FileItem>();
         mDataLessonList = new ArrayList<DataLesson>();
-
-        /* --- DEBUG --- */
-//        for (int i = 0; i < 48; i++) {
-//            boolean isUnit = (i % 7 == 0);
-//            mFileItemList.add(new FileItem(isUnit, "title", "sub title", i));
-//        }
-
-        /* --- DEBUG END --- */
-
+        mWordMap = new HashMap<String, Integer>();
         openFragmentLauncher();
     }
 
@@ -119,13 +119,13 @@ public class MainActivity extends Activity {
     /**
      * Open Content Fragment
      */
-    private void openFragmentContent(int lessonIndex) {
+    private void openFragmentContent(DataLesson dataLesson) {
         FragmentManager fm = getFragmentManager();
         if (mFragmentContent == null) {
             mFragmentContent = new ContentFragment();
             mFragmentContent.setListener(mFragmentContentListener);
-            // set file item index;
         }
+        mFragmentContent.setData(dataLesson, mWordMap);
         if (mFragmentContent.isAdded() == false) {
             FragmentTransaction ft = fm.beginTransaction();
             ft.setCustomAnimations(R.anim.slide_in_right, 0);

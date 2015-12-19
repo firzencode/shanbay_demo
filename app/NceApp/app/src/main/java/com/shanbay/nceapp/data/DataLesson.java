@@ -18,6 +18,14 @@ public class DataLesson {
             mWord = word;
             mTrans = trans;
         }
+
+        public String getWord() {
+            return mWord;
+        }
+
+        public String getTrans() {
+            return mTrans;
+        }
     }
 
     private int mIndex;
@@ -57,6 +65,18 @@ public class DataLesson {
 
     public String getTitle() {
         return mTitle;
+    }
+
+    public String getText() {
+        return mText;
+    }
+
+    public ArrayList<DataWord> getWordList() {
+        return mWordList;
+    }
+
+    public String getTrans() {
+        return mTranslation;
     }
 
     @Override

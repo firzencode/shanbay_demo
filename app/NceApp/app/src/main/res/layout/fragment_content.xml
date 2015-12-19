@@ -59,11 +59,17 @@
             android:layout_weight="1"
             android:visibility="visible">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Text" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/content_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Text" />
+            </ScrollView>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -73,11 +79,16 @@
             android:layout_weight="1"
             android:visibility="gone">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Words" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/content_words"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Words" />
+            </ScrollView>
         </RelativeLayout>
 
         <RelativeLayout
@@ -87,11 +98,16 @@
             android:layout_weight="1"
             android:visibility="gone">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Translation" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/content_trans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Translation" />
+            </ScrollView>
         </RelativeLayout>
 
         <LinearLayout
@@ -141,13 +157,20 @@
         </LinearLayout>
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/content_layout_slider_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:background="#66BBBBBB"
+        android:background="#EEBBBBBB"
+        android:orientation="vertical"
         android:visibility="gone">
+
+        <TextView
+            android:id="@+id/content_slide_bar_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seek bar info" />
 
         <SeekBar
             android:id="@+id/content_slide_bar"
@@ -157,5 +180,5 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 </com.shanbay.nceapp.FractionFrameLayout>
