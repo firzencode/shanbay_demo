@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -54,6 +55,7 @@ public class ContentFragment extends Fragment {
     private TextView mContentTranslation;
     private View mContentLoading;
     private View mBtnSwitchShowMarkedWord;
+    private ImageView mBtnSwitchShowMarkedWordIcon;
 
     private int mCurrentWordLevel = 0;
     private boolean mIsShowMarkedWord = true;
@@ -75,13 +77,13 @@ public class ContentFragment extends Fragment {
                     onSwitchSlideBar();
                     break;
                 case R.id.content_bottom_bar_text:
-                    onBtnOpenTextClick();
+                    onBtnOpenTextClick(v);
                     break;
                 case R.id.content_bottom_bar_word:
-                    onBtnOpenWordClick();
+                    onBtnOpenWordClick(v);
                     break;
                 case R.id.content_bottom_bar_translation:
-                    onBtnOpenTranslationClick();
+                    onBtnOpenTranslationClick(v);
                     break;
                 case R.id.content_slide_bar_switch:
                     onSlideBarSwitch();
@@ -151,6 +153,7 @@ public class ContentFragment extends Fragment {
         mBtnOpenWords.setOnClickListener(mOnClickListener);
         mBtnOpenTranslation.setOnClickListener(mOnClickListener);
 
+        mBtnOpenText.setSelected(true);
         // slide bar
         mLayoutSlideBar = view.findViewById(R.id.content_layout_slider_bar);
         mSlideBar = (SeekBar) view.findViewById(R.id.content_slide_bar);
@@ -160,6 +163,9 @@ public class ContentFragment extends Fragment {
 
         mBtnSwitchShowMarkedWord = view.findViewById(R.id.content_slide_bar_switch);
         mBtnSwitchShowMarkedWord.setOnClickListener(mOnClickListener);
+        mBtnSwitchShowMarkedWordIcon = (ImageView) view.findViewById(R.id.cotent_slide_bar_switch_icon);
+
+        updateBtnSwitchShowMarkedWordIcon();
 
         // ----- Content -----
 
@@ -187,7 +193,7 @@ public class ContentFragment extends Fragment {
             public void run() {
                 setMarkedWordVisible(mIsShowMarkedWord);
             }
-        },600);
+        }, 600);
         return view;
     }
 
@@ -222,28 +228,34 @@ public class ContentFragment extends Fragment {
         }
     }
 
-    private void onBtnOpenTextClick() {
-        showTargetContentView(mLayoutText);
+    private void onBtnOpenTextClick(View v) {
+        showTargetContentView(mLayoutText, v);
     }
 
-    private void onBtnOpenWordClick() {
-        showTargetContentView(mLayoutWords);
+    private void onBtnOpenWordClick(View v) {
+        showTargetContentView(mLayoutWords, v);
     }
 
-    private void onBtnOpenTranslationClick() {
-        showTargetContentView(mLayoutTranslation);
+    private void onBtnOpenTranslationClick(View v) {
+        showTargetContentView(mLayoutTranslation, v);
     }
 
     private void onSlideBarSwitch() {
         mIsShowMarkedWord = !mIsShowMarkedWord;
+        updateBtnSwitchShowMarkedWordIcon();
         setMarkedWordVisible(mIsShowMarkedWord);
     }
 
-    private void showTargetContentView(View v) {
+    private void showTargetContentView(View v, View button) {
         mLayoutText.setVisibility(View.GONE);
         mLayoutWords.setVisibility(View.GONE);
         mLayoutTranslation.setVisibility(View.GONE);
         v.setVisibility(View.VISIBLE);
+
+        mBtnOpenText.setSelected(false);
+        mBtnOpenTranslation.setSelected(false);
+        mBtnOpenWords.setSelected(false);
+        button.setSelected(true);
     }
 
     private void setMarkedWordVisible(boolean visible) {
@@ -296,5 +308,13 @@ public class ContentFragment extends Fragment {
             }
         }
         return builder;
+    }
+
+    private void updateBtnSwitchShowMarkedWordIcon() {
+        if (mIsShowMarkedWord) {
+            mBtnSwitchShowMarkedWordIcon.setImageResource(R.drawable.mark_visible);
+        } else {
+            mBtnSwitchShowMarkedWordIcon.setImageResource(R.drawable.mark_invisible);
+        }
     }
 }

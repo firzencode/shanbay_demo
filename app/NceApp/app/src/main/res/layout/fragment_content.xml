@@ -23,20 +23,13 @@
                 android:layout_height="60dp">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_centerInParent="true"
-                    android:background="#FFFFFF" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/back" />
             </RelativeLayout>
 
-
-            <TextView
-                android:id="@+id/content_top_bar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/content_top_bar_back"
-                android:text="Title"
-                android:textColor="#ffffff" />
 
             <RelativeLayout
                 android:id="@+id/content_top_bar_switch_slide_bar"
@@ -45,11 +38,26 @@
                 android:layout_alignParentRight="true">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_centerInParent="true"
-                    android:background="#FFFFFF" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/more" />
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/content_top_bar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/content_top_bar_switch_slide_bar"
+                android:layout_toRightOf="@id/content_top_bar_back"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:text="Title"
+                android:textColor="#ffffff"
+                android:textSize="17dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -67,7 +75,11 @@
                 <TextView
                     android:id="@+id/content_text"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="#454545"
+                    android:textSize="15dp" />
             </ScrollView>
 
             <ImageView
@@ -94,7 +106,10 @@
                     android:id="@+id/content_words"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Words" />
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="#454545"
+                    android:textSize="15dp" />
             </ScrollView>
         </RelativeLayout>
 
@@ -113,13 +128,16 @@
                     android:id="@+id/content_trans"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Translation" />
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="#454545"
+                    android:textSize="15dp" />
             </ScrollView>
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="55dp"
             android:background="#222222"
             android:orientation="horizontal">
 
@@ -130,10 +148,11 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_centerInParent="true"
-                    android:background="#666666" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/menu_text" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -143,10 +162,11 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_centerInParent="true"
-                    android:background="#666666" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/menu_word" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -156,10 +176,11 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_centerInParent="true"
-                    android:background="#666666" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/menu_trans" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
@@ -170,7 +191,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginTop="60dp"
-        android:background="#EEBBBBBB"
+        android:background="#232323"
 
         android:visibility="gone">
 
@@ -186,7 +207,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Seek bar info" />
+                android:textColor="#EEEFEFEF"
+                android:textSize="14dp" />
 
             <SeekBar
                 android:id="@+id/content_slide_bar"
@@ -201,14 +223,15 @@
             android:id="@+id/content_slide_bar_switch"
             android:layout_width="70dp"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:background="#FFDDDDDD">
+            android:layout_alignParentRight="true">
 
             <ImageView
+                android:id="@+id/cotent_slide_bar_switch_icon"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_centerInParent="true"
-                android:background="#222222" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/mark_visible" />
         </RelativeLayout>
 
 

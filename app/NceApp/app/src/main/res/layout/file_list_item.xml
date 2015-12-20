@@ -19,7 +19,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="1"
-                android:textColor="#ff919191" />
+                android:textColor="#ff919191"
+                android:textSize="14dp" />
         </RelativeLayout>
 
         <LinearLayout
@@ -30,21 +31,25 @@
             <TextView
                 android:id="@+id/file_item_lesson_title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Royal espionage" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="#676767"
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/file_item_lesson_subtitle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="王室谍报活动" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="#676767"
+                android:textSize="15dp" />
         </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/file_item_layout_unit"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="40dp"
         android:background="#ffdadada"
         android:visibility="gone">
 
@@ -55,7 +60,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
             android:text="Unit X"
-            android:textSize="18dp" />
+            android:textColor="#ff5a5a5a"
+            android:textSize="20dp" />
 
     </RelativeLayout>
 
