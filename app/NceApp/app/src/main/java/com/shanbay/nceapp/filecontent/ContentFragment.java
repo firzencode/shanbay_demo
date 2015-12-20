@@ -6,18 +6,26 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Layout;
+import android.text.Selection;
+import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.shanbay.nceapp.LinkMovementClickMethod;
 import com.shanbay.nceapp.R;
 import com.shanbay.nceapp.data.DataLesson;
 
@@ -173,8 +181,10 @@ public class ContentFragment extends Fragment {
 
         mContentText = (TextView) view.findViewById(R.id.content_text);
         //mContentText.setText(mData.getText());
-
+//        mContentText.setMovementMethod(LinkMovementClickMethod.getInstance());
+        mContentText.setHighlightColor(Color.TRANSPARENT);
         mContentLoading = view.findViewById(R.id.content_loading);
+
 
         mContentWord = (TextView) view.findViewById(R.id.content_words);
         ArrayList<DataLesson.DataWord> wordList = mData.getWordList();
@@ -267,7 +277,7 @@ public class ContentFragment extends Fragment {
         }
     }
 
-    private class LoadMarkedWordTask extends AsyncTask<Void, Void, CharSequence> {
+    private class LoadMarkedWordTask extends AsyncTask<Void, Void, SpannableStringBuilder> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -276,12 +286,14 @@ public class ContentFragment extends Fragment {
         }
 
         @Override
-        protected CharSequence doInBackground(Void... params) {
-            return getMarkedText();
+        protected SpannableStringBuilder doInBackground(Void... params) {
+            SpannableStringBuilder builder = getMarkedText();
+            // addWordClick(builder);
+            return builder;
         }
 
         @Override
-        protected void onPostExecute(CharSequence result) {
+        protected void onPostExecute(SpannableStringBuilder result) {
             mBtnSwitchShowMarkedWord.setEnabled(true);
             mContentLoading.setVisibility(View.INVISIBLE);
             mContentText.setText(result);
@@ -310,6 +322,35 @@ public class ContentFragment extends Fragment {
         return builder;
     }
 
+    private void addWordClick(SpannableStringBuilder builder) {
+        Pattern p = Pattern.compile("\\w+");
+        Matcher m = p.matcher(builder);
+        while (m.find()) {
+            int startIndex = m.start();
+            int endIndex = m.end();
+            ClickableSpan span = new ClickableSpan() {
+                boolean isHighlight = false;
+                int originalColor = Color.TRANSPARENT;
+
+                @Override
+                public void onClick(View widget) {
+                    Log.d("TEST", "Click");
+
+                }
+
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    ds.setColor(ds.getColor());
+                    ds.setUnderlineText(false);
+                    ds.clearShadowLayer();
+                }
+            };
+            builder.setSpan(span, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            Log.d("TEST", "from " + startIndex + " endIndex " + endIndex);
+        }
+        Log.d("TEST", "add DONE");
+    }
+
     private void updateBtnSwitchShowMarkedWordIcon() {
         if (mIsShowMarkedWord) {
             mBtnSwitchShowMarkedWordIcon.setImageResource(R.drawable.mark_visible);
@@ -317,4 +358,5 @@ public class ContentFragment extends Fragment {
             mBtnSwitchShowMarkedWordIcon.setImageResource(R.drawable.mark_invisible);
         }
     }
+
 }
