@@ -3,13 +3,9 @@ package com.shanbay.nceapp.data;
 import java.util.ArrayList;
 
 /**
- * Created by firzencode on 15/12/17.
+ * This class is used to represent a NCE lesson, including index, text, words and text translation.
  */
 public class DataLesson {
-    public String getSubTitle() {
-        return mSubTitle;
-    }
-
     public static class DataWord {
         private String mWord;
         private String mTrans;
@@ -59,6 +55,10 @@ public class DataLesson {
         mTranslation = translation;
     }
 
+    public String getSubTitle() {
+        return mSubTitle;
+    }
+
     public int getIndex() {
         return mIndex;
     }
@@ -77,10 +77,5 @@ public class DataLesson {
 
     public String getTrans() {
         return mTranslation;
-    }
-
-    @Override
-    public String toString() {
-        return "lesson : index = " + mIndex + " title = " + mTitle;
     }
 }

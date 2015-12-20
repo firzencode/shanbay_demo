@@ -2,10 +2,13 @@ package com.shanbay.nceapp.filecontent;
 
 
 import android.app.Fragment;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.style.UnderlineSpan;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -49,16 +52,18 @@ public class ContentFragment extends Fragment {
     private TextView mContentText;
     private TextView mContentWord;
     private TextView mContentTranslation;
+    private View mContentLoading;
+    private View mBtnSwitchShowMarkedWord;
 
     private int mCurrentWordLevel = 0;
-    private boolean mIsShowMarkedWord = false;
+    private boolean mIsShowMarkedWord = true;
 
     public interface IContentFragmentListener {
         void onCloseFragment();
     }
 
     private IContentFragmentListener mListener;
-
+    private Handler mHandler = new Handler();
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -78,11 +83,14 @@ public class ContentFragment extends Fragment {
                 case R.id.content_bottom_bar_translation:
                     onBtnOpenTranslationClick();
                     break;
+                case R.id.content_slide_bar_switch:
+                    onSlideBarSwitch();
                 default:
                     break;
             }
         }
     };
+
 
     private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
@@ -100,7 +108,6 @@ public class ContentFragment extends Fragment {
             Log.d("TEST", "Stop Tracking");
             mCurrentWordLevel = seekBar.getProgress();
             setMarkedWordVisible(mIsShowMarkedWord);
-
         }
     };
 
@@ -149,23 +156,20 @@ public class ContentFragment extends Fragment {
         mSlideBar = (SeekBar) view.findViewById(R.id.content_slide_bar);
         mSlideBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
         mTvSlideBar = (TextView) view.findViewById(R.id.content_slide_bar_text);
-        mSlideBar.setMax(5);
+        mSlideBar.setMax(6);
+
+        mBtnSwitchShowMarkedWord = view.findViewById(R.id.content_slide_bar_switch);
+        mBtnSwitchShowMarkedWord.setOnClickListener(mOnClickListener);
 
         // ----- Content -----
 
         mTvTitle.setText(mData.getTitle());
 
         mContentText = (TextView) view.findViewById(R.id.content_text);
-        mContentText.setText(mData.getText());
+        //mContentText.setText(mData.getText());
 
+        mContentLoading = view.findViewById(R.id.content_loading);
 
-        ////// DEBUG
-
-        mIsShowMarkedWord = true;
-        setMarkedWordVisible(true);
-
-
-        //////DEBUG
         mContentWord = (TextView) view.findViewById(R.id.content_words);
         ArrayList<DataLesson.DataWord> wordList = mData.getWordList();
         StringBuilder wordText = new StringBuilder();
@@ -178,6 +182,12 @@ public class ContentFragment extends Fragment {
         mContentTranslation = (TextView) view.findViewById(R.id.content_trans);
         mContentTranslation.setText(mData.getTrans());
 
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setMarkedWordVisible(mIsShowMarkedWord);
+            }
+        },600);
         return view;
     }
 
@@ -224,6 +234,11 @@ public class ContentFragment extends Fragment {
         showTargetContentView(mLayoutTranslation);
     }
 
+    private void onSlideBarSwitch() {
+        mIsShowMarkedWord = !mIsShowMarkedWord;
+        setMarkedWordVisible(mIsShowMarkedWord);
+    }
+
     private void showTargetContentView(View v) {
         mLayoutText.setVisibility(View.GONE);
         mLayoutWords.setVisibility(View.GONE);
@@ -234,9 +249,30 @@ public class ContentFragment extends Fragment {
     private void setMarkedWordVisible(boolean visible) {
         if (!visible) {
             mContentText.setText(mData.getText());
+            mContentLoading.setVisibility(View.INVISIBLE);
         } else {
-            // TODO ASYNC
-            mContentText.setText(getMarkedText());
+            new LoadMarkedWordTask().execute();
+        }
+    }
+
+    private class LoadMarkedWordTask extends AsyncTask<Void, Void, CharSequence> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mBtnSwitchShowMarkedWord.setEnabled(false);
+            mContentLoading.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected CharSequence doInBackground(Void... params) {
+            return getMarkedText();
+        }
+
+        @Override
+        protected void onPostExecute(CharSequence result) {
+            mBtnSwitchShowMarkedWord.setEnabled(true);
+            mContentLoading.setVisibility(View.INVISIBLE);
+            mContentText.setText(result);
         }
     }
 
@@ -254,12 +290,11 @@ public class ContentFragment extends Fragment {
                 while (m.find()) {
                     int startIndex = m.start();
                     int endIndex = m.end();
-                    UnderlineSpan span = new UnderlineSpan();
-                    builder.setSpan(span, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    BackgroundColorSpan span = new BackgroundColorSpan(Color.YELLOW);
+                    builder.setSpan(span, startIndex + 1, endIndex - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }
         }
         return builder;
     }
-
 }
