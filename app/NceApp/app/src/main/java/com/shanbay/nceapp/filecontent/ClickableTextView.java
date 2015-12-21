@@ -7,15 +7,17 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
 /**
- * Created by firzencode on 15/12/20.
+ * This class is used to represent a clickable text view,
+ * used to change background color when clicked text.
  */
 public class ClickableTextView extends TextView {
+
+    private SpannableStringBuilder mSb = null;
 
     @Override
     protected void onCreateContextMenu(ContextMenu menu) {
@@ -40,23 +42,28 @@ public class ClickableTextView extends TextView {
     }
 
     @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
         Layout layout = getLayout();
         if (layout != null) {
-            int line = 0;
-            Log.d("TEST", "action = " + event.getAction());
             switch (action) {
                 case MotionEvent.ACTION_UP:
-                    line = layout.getLineForVertical(getScrollY() + (int) event.getY());
+                    int line = layout.getLineForVertical(getScrollY() + (int) event.getY());
                     int curOff = layout.getOffsetForHorizontal(line, (int) event.getX());
-                    //Selection.setSelection(getEditableText(), off, curOff);
-                    //Log.d("TEST2", " cur off = " + curOff);
                     setBackground(curOff);
                     break;
             }
         }
         return true;
+    }
+
+    public void bindSpannableStringBuilder(SpannableStringBuilder sb) {
+        mSb = sb;
     }
 
     private void setBackground(int offset) {
@@ -94,42 +101,19 @@ public class ClickableTextView extends TextView {
             return;
         }
 
-        SpannableStringBuilder builder = new SpannableStringBuilder(getText());
-//        BackgroundColorSpan[] sp = builder.getSpans(offset, offset + 1, BackgroundColorSpan.class);
-//        int targetColor = Color.RED;
-//        if (sp != null) {
-//            Log.d("TEST", "SP array ! null size = " + sp.length);
-//            for (int i = 0; i < sp.length; i++) {
-//                Log.d("TEST", "SP color = " + sp[i].getBackgroundColor());
-//            }
-//        } else {
-//            Log.d("TEST", "SP array is null!");
-//        }
-//        int targetBgColor;
-//
-//        if (sp != null && sp.length > 0) {
-//            int curBgColor = sp[0].getBackgroundColor();
-//            Log.d("TEST", "cur BgColor = " + curBgColor);
-//            if (curBgColor != Color.RED) {
-//                Log.d("TEST", "AAA");
-//                targetBgColor = Color.RED;
-//            } else {
-//                Log.d("TEST", "BBB");
-//                targetBgColor = Color.WHITE;
-//            }
-//            builder.removeSpan(sp[0]);
-//        } else {
-//            Log.d("TEST", "cur BgColor = null");
-//            Log.d("TEST", "CCC");
-//            targetBgColor = Color.RED;
-//        }
-//        Log.d("TEST", "target color = " + targetBgColor);
+        if (mSb == null) {
+            return;
+        }
 
-        int targetColor = Color.RED;
-        BackgroundColorSpan span = new BackgroundColorSpan(targetColor);
-        builder.setSpan(span, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        setText(builder);
-        //Log.d("TEST", "offset = " + offset + " start = " + startIndex + " end = " + endIndex);
-//        Log.d("TEST", "555");
+        BackgroundColorSpan[] sp = mSb.getSpans(offset, offset + 1, BackgroundColorSpan.class);
+        if (sp != null && sp.length > 0) {
+            mSb.removeSpan((sp[0]));
+            setText(mSb);
+        } else {
+            int targetColor = Color.RED;
+            BackgroundColorSpan span = new BackgroundColorSpan(targetColor);
+            mSb.setSpan(span, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            setText(mSb);
+        }
     }
 }

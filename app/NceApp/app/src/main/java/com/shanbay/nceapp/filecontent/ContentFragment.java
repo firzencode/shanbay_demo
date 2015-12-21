@@ -50,7 +50,7 @@ public class ContentFragment extends Fragment {
     private DataLesson mData;
     private HashMap<String, Integer> mWordMap;
 
-    private TextView mContentText;
+    private ClickableTextView mContentText;
     private TextView mContentWord;
     private TextView mContentTranslation;
     private View mContentLoading;
@@ -171,7 +171,7 @@ public class ContentFragment extends Fragment {
 
         mTvTitle.setText(mData.getTitle());
 
-        mContentText = (TextView) view.findViewById(R.id.content_text);
+        mContentText = (ClickableTextView) view.findViewById(R.id.content_text);
         mContentText.setHighlightColor(Color.TRANSPARENT);
         mContentLoading = view.findViewById(R.id.content_loading);
 
@@ -260,6 +260,8 @@ public class ContentFragment extends Fragment {
 
     private void setMarkedWordVisible(boolean visible) {
         if (!visible) {
+            SpannableStringBuilder sb = new SpannableStringBuilder(mData.getText());
+            mContentText.bindSpannableStringBuilder(sb);
             mContentText.setText(mData.getText());
             mContentLoading.setVisibility(View.INVISIBLE);
         } else {
@@ -285,6 +287,7 @@ public class ContentFragment extends Fragment {
         protected void onPostExecute(SpannableStringBuilder result) {
             mBtnSwitchShowMarkedWord.setEnabled(true);
             mContentLoading.setVisibility(View.INVISIBLE);
+            mContentText.bindSpannableStringBuilder(result);
             mContentText.setText(result);
         }
     }
