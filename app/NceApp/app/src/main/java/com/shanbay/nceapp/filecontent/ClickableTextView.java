@@ -17,7 +17,11 @@ import android.widget.TextView;
  */
 public class ClickableTextView extends TextView {
 
+    /**
+     * Bound builder
+     */
     private SpannableStringBuilder mSb = null;
+    private int mSelectWordStartIndex = -1;
 
     @Override
     protected void onCreateContextMenu(ContextMenu menu) {
@@ -64,6 +68,7 @@ public class ClickableTextView extends TextView {
 
     public void bindSpannableStringBuilder(SpannableStringBuilder sb) {
         mSb = sb;
+        mSelectWordStartIndex = -1;
     }
 
     private void setBackground(int offset) {
@@ -105,15 +110,36 @@ public class ClickableTextView extends TextView {
             return;
         }
 
-        BackgroundColorSpan[] sp = mSb.getSpans(offset, offset + 1, BackgroundColorSpan.class);
-        if (sp != null && sp.length > 0) {
-            mSb.removeSpan((sp[0]));
+        if (mSelectWordStartIndex == startIndex) {
+            // we need to remove the select bg
             setText(mSb);
+            mSelectWordStartIndex = -1;
         } else {
+            // click another position
+            mSelectWordStartIndex = startIndex;
             int targetColor = Color.RED;
             BackgroundColorSpan span = new BackgroundColorSpan(targetColor);
-            mSb.setSpan(span, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            setText(mSb);
+            SpannableStringBuilder builder = new SpannableStringBuilder(mSb.subSequence(0, mSb.length()));
+            builder.setSpan(span, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            setText(builder);
         }
+//
+//        BackgroundColorSpan[] sp = mSb.getSpans(offset, offset + 1, BackgroundColorSpan.class);
+//        if (sp != null && sp.length > 0) {
+//            // click position has a background
+//
+//        }
+//
+//
+//        if (sp != null && sp.length > 0) {
+//            // there is a background color at click position
+//            mSb.removeSpan((sp[0]));
+//            setText(mSb);
+//        } else {
+//            int targetColor = Color.RED;
+//            BackgroundColorSpan span = new BackgroundColorSpan(targetColor);
+//            mSb.setSpan(span, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            setText(mSb);
+//        }
     }
 }
